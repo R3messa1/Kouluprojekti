@@ -12,6 +12,7 @@ public class EnemyAI : MonoBehaviour
     NavMeshAgent NavMeshAgent;
     //Enemys distance to player
     float distanceToTarget = Mathf.Infinity;
+    bool isProvoked = false;
 
     // Start is called before the first frame update
     void Start()
@@ -26,10 +27,39 @@ public class EnemyAI : MonoBehaviour
     {
         distanceToTarget = Vector3.Distance(target.position, transform.position);
 
-        if (distanceToTarget <= chaseRange)
+        if (isProvoked)
         {
-        NavMeshAgent.SetDestination(target.position);
+            EngageTarget();
         }
+
+
+        else if (distanceToTarget <= chaseRange)
+        {
+            isProvoked = true;
+        }
+    }
+
+    private void EngageTarget()
+    {
+        if (distanceToTarget >= NavMeshAgent.stoppingDistance)
+        {
+            ChaseTarget();
+        }
+
+        if (distanceToTarget <= NavMeshAgent.stoppingDistance)
+        {
+            AttackTarget();
+        }
+    }
+
+    private void ChaseTarget()
+    {
+        NavMeshAgent.SetDestination(target.position);
+    }
+
+    private void AttackTarget()
+    {
+        Debug.Log(name + ": are you wanna die " + target.name);
     }
 
     //Sphere that shows the change range
