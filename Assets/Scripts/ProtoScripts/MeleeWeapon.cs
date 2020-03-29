@@ -25,6 +25,7 @@ public class MeleeWeapon : MonoBehaviour
             Debug.Log("Kuole saatanan " + hit.transform.name);
             //TODO: add some hit effect for visual players
             EnemyHealth target = hit.transform.GetComponent<EnemyHealth>();
+            if (target == null) return;
             //method on EnemyHealth that decreases the enemy's health
             target.TakeDamage(damage);
         }
